@@ -43,25 +43,30 @@ def reachable(dag, n1, n2, ob):
             L = L | dag[Y].get_parents()
         A.add(Y)
     #phase II: traverse active trails starting from n1
-    L = set([(n1, 'up')])
-    V = set()
-    R = set()
+    L = set([(n1, 'up')]) #set of nodes to be visited, starting from the first node
+    V = set() #visited nodes
+    R = set() #reachable nodes
     while L:
         (Y, d) = L.pop()
-        if not (Y, d) in V:
-            if not Y in set(ob):
+        if not (Y, d) in V: #check if visited
+            if not Y in set(ob): #if Y is observed, it is not reachable
                 if Y == n2: return False
                 R.add(Y)
+            #also mark direction to clarify cases in Koller and Friedman (2009),
+            #"Probabilistic Graphical Models: Principles and Techniques" (Example 3.4)
             V.add((Y, d))
+            # Y is not a collider on the direction it is searched. All its neighbors are added to to-visit list
             if d == 'up' and not Y in ob:
                 for Z in dag[Y].get_parents():
                     L.add((Z, 'up'))
                 for Z in dag[Y].get_children():
                     L.add((Z, 'down'))
             elif d == 'down':
+                # no collider if searching for its children
                 if not Y in set(ob):
                     for Z in dag[Y].get_children():
                         L.add((Z, 'down'))
+                # if in the ancestor of observations, the path is still active even with collider
                 if Y in A:
                     for Z in dag[Y].get_parents():
                         L.add((Z, 'up'))
