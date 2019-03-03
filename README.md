@@ -17,7 +17,7 @@ Here I use a test case as in
 > Koller and Friedman (2009), "Probabilistic Graphical Models: Principles and Techniques" (page 76)
 
 The graph looks like below and is described in [example.py](https://github.com/qchenclaire/d-separation/blob/master/example.py)
-![Alt text](https://github.com/qchenclaire/d-separation/blob/master/example.JPG "Example Graph")
+![Alt text](https://github.com/qchenclaire/d-separation/blob/master/example.JPG=250x250)
 
 For example,
 ```
@@ -27,7 +27,7 @@ returns
 ```
 False
 ```
-means 1$$\not\indep_d$$4|3
+means - <img src="https://latex.codecogs.com/gif.latex?1 \not \indep_d 4 | 3" />
 ```
 python d-separation.py -f example.txt -n1 1 -n2 4 -ob 2,3
 ```
@@ -35,4 +35,4 @@ returns
 ```
 True
 ```
-means 1$$\indep_d$$4|2,3
+means - <img src="https://latex.codecogs.com/gif.latex?1\indep_d 4 | 2, 3" /> 
