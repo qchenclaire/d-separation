@@ -17,7 +17,7 @@ Here I use a test case as in
 > Koller and Friedman (2009), "Probabilistic Graphical Models: Principles and Techniques" (page 76)
 
 The graph looks like below and is described in [example.py](https://github.com/qchenclaire/d-separation/blob/master/example.py)
-![](https://github.com/qchenclaire/d-separation/blob/master/example.JPG | width=250 )
+<img src="https://github.com/qchenclaire/d-separation/blob/master/example.JPG" width="250" height="250">
 
 For example,
 ```
