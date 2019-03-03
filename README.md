@@ -27,7 +27,7 @@ returns
 ```
 False
 ```
-means - <img src="https://latex.codecogs.com/gif.latex?1 \not \indep_d 4 | 3" />
+means 1 and 4 are not d-separated given 3
 ```
 python d-separation.py -f example.txt -n1 1 -n2 4 -ob 2,3
 ```
@@ -35,4 +35,31 @@ returns
 ```
 True
 ```
-means - <img src="https://latex.codecogs.com/gif.latex?1\indep_d 4 | 2, 3" /> 
+means 1 and 4 not d-separated given 2, 3
+
+Running Homework Example
+==========
+<!-- ```
+python d-separation.py -f dag.txt -n1 61 -n2 68 -ob 4,19,90
+```
+returns
+```
+False
+```
+
+
+```
+python d-separation.py -f dag.txt -n1 55 -n2 27 -ob 4,8,9,12,29,32,40,44,45,48,50,52
+```
+returns
+```
+True
+``` -->
+```
+sh run.sh
+```
+returns
+```
+False
+True
+```

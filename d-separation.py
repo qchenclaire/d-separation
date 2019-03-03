@@ -14,30 +14,33 @@ class Node(object):
     def get_children(self):
         return self.child_ids
 
-def construct_BN(file):
+# construct a DAG. A DAG is stored as a list of Node class. And a node stores its parent id and child ids
+# that correspond to index of this list
+def construct_DAG(file):
     f = open(file)
     lines = f.readlines()
     n_nodes = len(lines[0].split(' '))
-    bn = [Node() for i in range(n_nodes)]
+    dag = [Node() for i in range(n_nodes)]
     for i, line in enumerate(lines[1:]):
         edges = line.split(' ')[1:]
         for j in range(len(edges)):
             if '1' in edges[j]:
-                bn[i].add_child(j)
-                bn[j].add_parent(i)
+                dag[i].add_child(j)
+                dag[j].add_parent(i)
 
-    # for node in bn:
+    # for node in dag:
     #     print node.get_parents(), node.get_children()
-    return bn
+    return dag
 
-def reachable(bn, n1, n2, ob):
+#Koller and Friedman (2009), "Probabilistic Graphical Models: Principles and Techniques" (page 75)
+def reachable(dag, n1, n2, ob):
     #phase I: insert all ancestors of ob into A
     L = set(ob)
     A = set()
     while L:
         Y = L.pop()
         if not Y in A:
-            L = L | bn[Y].get_parents()
+            L = L | dag[Y].get_parents()
         A.add(Y)
     #phase II: traverse active trails starting from n1
     L = set([(n1, 'up')])
@@ -51,16 +54,16 @@ def reachable(bn, n1, n2, ob):
                 R.add(Y)
             V.add((Y, d))
             if d == 'up' and not Y in ob:
-                for Z in bn[Y].get_parents():
+                for Z in dag[Y].get_parents():
                     L.add((Z, 'up'))
-                for Z in bn[Y].get_children():
+                for Z in dag[Y].get_children():
                     L.add((Z, 'down'))
             elif d == 'down':
                 if not Y in set(ob):
-                    for Z in bn[Y].get_children():
+                    for Z in dag[Y].get_children():
                         L.add((Z, 'down'))
                 if Y in A:
-                    for Z in bn[Y].get_parents():
+                    for Z in dag[Y].get_parents():
                         L.add((Z, 'up'))
     return True
 
@@ -69,7 +72,7 @@ def reachable(bn, n1, n2, ob):
 #parse args
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="file",
-                    help="input bn file", metavar="FILE")
+                    help="input dag file", metavar="FILE")
 parser.add_argument("-n1", "--node1", dest="n1", help="first node",
                     type=int)
 parser.add_argument("-n2", "--node2", dest="n2", help="second node",
@@ -85,5 +88,5 @@ ob = [i - 1 for i in ob]
 assert (not n1 in ob), "node 1 should not appear in observations"
 assert (not n2 in ob), "node 2 should not appear in observations"
 
-bn = construct_BN(args.file)
-print reachable(bn, n1, n2, ob)
+dag = construct_DAG(args.file)
+print reachable(dag, n1, n2, ob)
